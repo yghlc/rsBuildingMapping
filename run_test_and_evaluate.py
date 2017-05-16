@@ -243,8 +243,8 @@ def main():
     if read_test_data(test_file) is False:
         return False
 
-    # result_list = run_test()
-    result_list = io_function.get_file_list_by_ext('.png', save_file_folder, bsub_folder=False)
+    result_list = run_test()
+    # result_list = io_function.get_file_list_by_ext('.png', save_file_folder, bsub_folder=False)
     if result_list is False:
         return False
 
