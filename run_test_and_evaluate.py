@@ -12,14 +12,15 @@ add time: 22 April, 2017
 import os,sys
 import glob
 # modify this if necessary
-codes_path = '/home/lchuang/codes/rsBuildingMapping'
+HOME = os.path.expanduser('~')
+codes_path = HOME+'/codes/rsBuildingMapping'
 sys.path.insert(0, codes_path)
 
 # modify this if necessary
-expr_folder='/home/lchuang/experiment/pytorch_deeplab_resnet/spacenet_rgb_aoi_4'
+expr_folder=HOME+'/experiment/pytorch_deeplab_resnet/spacenet_rgb_aoi_4'
 test_list_file = 'val.txt'
-GTpath='/home/lchuang/Data/spacenet/voc_format/AOI_4_Shanghai_Train/annotations'
-IMpath='/home/lchuang/Data/spacenet/voc_format/AOI_4_Shanghai_Train/annotations'
+GTpath=HOME+'/Data/spacenet/voc_format/AOI_4_Shanghai_Train/annotations'
+IMpath=HOME+'/Data/spacenet/voc_format/AOI_4_Shanghai_Train/annotations'
 gpuid = 7
 # NET_ID = 'deeplab_largeFOV'  # model name
 
