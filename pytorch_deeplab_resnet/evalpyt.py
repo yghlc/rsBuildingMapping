@@ -16,6 +16,8 @@ from os import walk
 import matplotlib.pyplot as plt
 import torch.nn as nn
 
+import scipy.misc as misc
+
 from docopt import docopt
 
 docstr = """Evaluate ResNet-DeepLab with 5 branches on sketches of 11 categories (5 super categories)
@@ -92,7 +94,7 @@ for iter in range(1,11):   #TODO set the (different iteration)models that you wa
 
     pytorch_list = [];
     for i in img_list:
-        img = np.zeros((513,513,3));
+        img = np.zeros((663,663,3));
 
         # img_temp = cv2.imread(os.path.join(im_path,i[:-1]+'.jpg')).astype(float)
         img_temp = cv2.imread(os.path.join(im_path, i[:-1] + '.tif')).astype(float)
@@ -108,12 +110,20 @@ for iter in range(1,11):   #TODO set the (different iteration)models that you wa
         gt[gt==255] = 0
 
         output = model(Variable(torch.from_numpy(img[np.newaxis, :].transpose(0,3,1,2)).float(),volatile = True).cuda(gpu0))
-        interp = nn.UpsamplingBilinear2d(size=(513, 513))
+        interp = nn.UpsamplingBilinear2d(size=(663, 663))
         output = interp(output[3]).cpu().data[0].numpy()
         output = output[:,:img_temp.shape[0],:img_temp.shape[1]]
         
         output = output.transpose(1,2,0)
         output = np.argmax(output,axis = 2)
+
+        #save to png
+        result = np.uint8(output)
+        result = result.reshape(650, 650)
+        result[np.where(result == 1)] = 255
+        save_png = os.path.join('data','results',str(iter),i+'.png')
+        misc.imsave(save_png, result)
+
         if args['--visualize']:
             plt.subplot(3, 1, 1)
             plt.imshow(img_original)
@@ -122,6 +132,7 @@ for iter in range(1,11):   #TODO set the (different iteration)models that you wa
             plt.subplot(3, 1, 3)
             plt.imshow(output)
             plt.show()
+
 
         iou_pytorch = get_iou(output,gt)       
         pytorch_list.append(iou_pytorch)

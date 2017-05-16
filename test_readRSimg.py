@@ -44,6 +44,7 @@ def read_disp_img(img_path):
     #     band_img_float = band_img.astype(float)
     #     images[:,:,i,0] = band_img_float
 
+    # images = numpy.zeros((width, height, bandcount))
     images = img_pro.Read_Image_data_to_numpy_array_all_band_pixel(img_path)
     if images is False:
         return False
