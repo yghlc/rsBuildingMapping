@@ -21,6 +21,7 @@ import scipy.misc as misc
 
 from docopt import docopt
 
+sys.path.insert(0,'/home/lchuang/codes/rsBuildingMapping')
 import basic.io_function as io_function
 
 docstr = """Evaluate ResNet-DeepLab with 5 branches on sketches of 11 categories (5 super categories)
