@@ -114,7 +114,7 @@ def read_test_data(test_file,file_id=None):
                 sample.groudT = temp[1]
             test_data.append(sample)
 
-    basic.outputlogMessage('read test data completed, sample count %d'%len())
+    basic.outputlogMessage('read test data completed, sample count %d'%len(test_data))
     return True
 
 def run_test():
