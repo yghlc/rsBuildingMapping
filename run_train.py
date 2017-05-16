@@ -110,7 +110,7 @@ def read_train_data(train_file,file_id=None):
         if len(sample.id)< 1:
             sample.id = os.path.splitext(image_basename)[0]
 
-    basic.outputlogMessage('read test data completed, sample count %d'%len(test_data))
+    basic.outputlogMessage('read train data completed, sample count %d'%len(train_data))
     return True
 
 def cal_mean_value_of_each_band(train_file,test_file):
