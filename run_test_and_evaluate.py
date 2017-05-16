@@ -39,7 +39,7 @@ import SpaceNetChallenge.utilities.python.createCSVFromGEOJSON as createCSVFromG
 import pytorch_deeplab_resnet.evalpyt as evalpyt
 
 if os.path.isdir(expr_folder) is False:
-    print 'error, %s not exist '%expr_folder
+    print ('error, %s not exist '%expr_folder)
     exit(1)
 
 
@@ -48,7 +48,7 @@ save_file_folder = os.path.join(expr_folder,'results')
 io_function.mkdir(save_file_folder)
 
 if os.path.isfile(test_file) is False:
-    print 'error, %s not exist '%test_file
+    print ('error, %s not exist '%test_file)
     exit(1)
 
 # id is need in caffe for output result

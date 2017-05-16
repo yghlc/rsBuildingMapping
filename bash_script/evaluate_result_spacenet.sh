@@ -11,7 +11,7 @@ exprid=spacenet_rgb_aoi_4
 
 python_script=${HOME}/codes/rsBuildingMapping/SpaceNetChallenge/utilities/python/evaluateScene.py
 
-truecsv=${spacenet_root}/AOI_4_Paris_Train/summaryData/AOI_4_Paris_Train_Building_Solutions.csv
+truecsv=${spacenet_root}/AOI_4_Shanghai_Train/summaryData/AOI_4_Shanghai_Train_Building_Solutions.csv
 detectedcsv=${output_root}/${exprid}/results/result_buildings.csv
 
 echo SpaceNetTruthFile: ${truecsv}
