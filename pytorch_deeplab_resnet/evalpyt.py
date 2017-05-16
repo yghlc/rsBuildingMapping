@@ -99,6 +99,7 @@ def run_evalpyt(gpu0,model_path,test_data,save_dir):
         io_function.mkdir(save_png_dir)
 
     pytorch_list = []
+    result_list = []
     for test_sample in test_data:
         img = np.zeros((663,663, band))
 
@@ -127,6 +128,7 @@ def run_evalpyt(gpu0,model_path,test_data,save_dir):
         result[np.where(result == 1)] = 255
         save_png = os.path.join(save_png_dir, test_sample.id +'.png')
         misc.imsave(save_png, result)
+        result_list.append(save_png)
 
         # if args['--visualize']:
         #     plt.subplot(3, 1, 1)
@@ -148,7 +150,8 @@ def run_evalpyt(gpu0,model_path,test_data,save_dir):
     if len(pytorch_list) > 0:
         print ('pytorch', iter, np.sum(np.asarray(pytorch_list)) / len(pytorch_list))
 
-    pass
+    return result_list
+
 
 
 if __name__ == '__main__':
