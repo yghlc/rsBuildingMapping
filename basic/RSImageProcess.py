@@ -34,8 +34,41 @@ class RSImgProclass(object):
         height = self.img__obj.GetHeight()
         return self.__Read_band_data_to_numpy_array(bandindex,0,0,width,height,self.img__obj)
 
+    def Read_Image_data_to_numpy_array_all_band_pixel(self,image_path):
+        if io_function.is_file_exist(image_path) is False:
+            return False
+        self.img__obj =  RSImageclass()
+        if self.img__obj.open(image_path) is False:
+            return False
+        width = self.img__obj.GetWidth()
+        height = self.img__obj.GetHeight()
+        bandcount = self.img__obj.GetBandCount()
+        images = numpy.zeros((width, height, bandcount))
+        for band in range(0,bandcount):
+            band_img = self.__Read_band_data_to_numpy_array(band+1,0,0,width,height,self.img__obj)
+            if band_img is False:
+                return False
+            images[:,:,band] = band_img
+        return images
+
     def __Read_Image_band_data_to_numpy_array(self,bandindex,xoff,yoff,width,height,image_path):
         return True
+
+    def __unpack_gdal_data(self,GDALDataType,offsetvaluestr,width,height):
+
+        if GDALDataType is 2:  # GDT_UInt16
+            offsetvalue = struct.unpack('H' * width * height, offsetvaluestr)
+        elif GDALDataType is 3:  # GDT_Int16
+            offsetvalue = struct.unpack('h' * width * height, offsetvaluestr)
+        elif GDALDataType is 6:  # GDT_Float32
+            offsetvalue = struct.unpack('f' * width * height, offsetvaluestr)
+        elif GDALDataType is 1:  # GDT_Byte = 1
+            offsetvalue = struct.unpack('B' * width * height, offsetvaluestr)
+        else:
+            basic.outputlogMessage('error: not support datatype currently')
+            return False
+        return offsetvalue
+
 
     def __Read_band_data_to_numpy_array(self,bandindex,xoff,yoff,width,height,image_obj=None):
         if image_obj is None:
@@ -45,19 +78,9 @@ class RSImgProclass(object):
             return False
         # offsetvalue = None
         # print image_obj.GetGDALDataType()
-        if image_obj.GetGDALDataType() is 2:   #GDT_UInt16
-            offsetvalue = struct.unpack('H' * width * height, offsetvaluestr)
-        elif image_obj.GetGDALDataType() is 3:    #GDT_Int16
-            offsetvalue  = struct.unpack('h'*width*height, offsetvaluestr)
-        elif image_obj.GetGDALDataType() is 6:  #GDT_Float32
-            offsetvalue  = struct.unpack('f'*width*height, offsetvaluestr)
-        elif image_obj.GetGDALDataType() is 1:              #GDT_Byte = 1
-            offsetvalue = struct.unpack('B' * width * height, offsetvaluestr)
-        else:
-            basic.outputlogMessage('error: not support datatype currently')
+        offsetvalue = self.__unpack_gdal_data(image_obj.GetGDALDataType(),offsetvaluestr,width,height)
+        if offsetvalue is False:
             return False
-
-        # return numpy.asarray(offsetvalue)
         return numpy.asarray(offsetvalue).reshape(width,height)
 
 

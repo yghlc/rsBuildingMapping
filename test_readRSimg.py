@@ -33,17 +33,20 @@ def read_disp_img(img_path):
     width = img_obj.GetWidth()
     height = img_obj.GetHeight()
 
-    images = numpy.zeros((width, height, band_count, 1))
+    # images = numpy.zeros((width, height, band_count, 1))
 
     img_pro = RSImgProclass()
-    img_pro.Read_Image_band_data_to_numpy_array_all_pixel(1,img_path)
-    for i in range(0,band_count):
-        bandindex = i+1
-        print(bandindex)
-        band_img = img_pro.Read_Image_band_data_to_numpy_array_all_pixel(bandindex, img_path)
-        band_img_float = band_img.astype(float)
-        images[:,:,i,0] =band_img_float
+    # img_pro.Read_Image_band_data_to_numpy_array_all_pixel(1,img_path)
+    # for i in range(0,band_count):
+    #     bandindex = i+1
+    #     print(bandindex)
+    #     band_img = img_pro.Read_Image_band_data_to_numpy_array_all_pixel(bandindex, img_path)
+    #     band_img_float = band_img.astype(float)
+    #     images[:,:,i,0] = band_img_float
 
+    images = img_pro.Read_Image_data_to_numpy_array_all_band_pixel(img_path)
+    if images is False:
+        return False
 
     # print(images)
 
@@ -54,7 +57,7 @@ def read_disp_img(img_path):
     data = numpy.zeros((height, width, 3), dtype=numpy.uint8)
     disp_bands = [0,1,2]
     for i in range(0,3):
-        image_band = images[:,:,disp_bands[i],0]
+        image_band = images[:,:,disp_bands[i]]
         max_value = image_band.max()#numpy.max(image_band)
         min_value = image_band.min()
         data[:,:,i] = 255*(image_band - min_value)/(max_value - min_value)
