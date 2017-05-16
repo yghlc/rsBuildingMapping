@@ -112,7 +112,9 @@ def read_test_data(test_file,file_id=None):
             sample.image = temp[0]
             if len(temp) > 1:
                 sample.groudT = temp[1]
+            test_data.append(sample)
 
+    basic.outputlogMessage('read test data completed, sample count %d'%len())
     return True
 
 def run_test():
@@ -240,6 +242,8 @@ def main():
         return False
 
     result_list = run_test()
+    if result_list is False:
+        return False
 
     # get the deeplab output result, in png or tif format
     # result_list = convert_mat_to_png()
