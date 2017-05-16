@@ -52,15 +52,12 @@ if os.path.isfile(test_file) is False:
 
 # id is need in caffe for output result
 
-# list, each row contain :
-# [path of image, path of ground true file , image id ]
-# or
-# [path of image, image id ]
+
 class SampleClass(object):
     image = ''      # path of image
     groudT = ''     # path of groud image
     id = ''         # file ID
-
+# list of SampleClass
 test_data = []
 
 
@@ -241,9 +238,11 @@ def main():
     if read_test_data(test_file) is False:
         return False
 
-    result_list = run_test()
-    if result_list is False:
-        return False
+    # result_list = run_test()
+    # if result_list is False:
+    #     return False
+    result_list = io_function.get_file_list_by_ext('.png',save_file_folder,bsub_folder=False)
+
 
     # get the deeplab output result, in png or tif format
     # result_list = convert_mat_to_png()
@@ -258,7 +257,7 @@ def main():
     geojson_list = convert_png_result_to_geojson(result_list)
 
     # original raster file list, can get extract imageID
-    rasterList = [item[0] for item in test_data]
+    rasterList = [item.image for item in test_data]
     outputCSVFileName = os.path.join(save_file_folder,'result_buildings.csv')
     if createCSVFromGEOJSON.createCSVFromGEOJSON(rasterList,geojson_list,outputCSVFileName) is not True:
         return False

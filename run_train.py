@@ -10,37 +10,36 @@ add time: 23 April, 2017
 
 import os,sys
 # modify this if necessary
-codes_path = '/home/hlc/codes/PycharmProjects/rsBuildingSeg'
+codes_path = '/home/lchuang/codes/rsBuildingMapping'
 sys.path.insert(0, codes_path)
 
 # modify this if necessary
-expr='/media/hlc/DATA/Data_lingcao/aws_SpaceNet/deeplab_exper/spacenet_rgb_aoi_2'
-gpuid = 0
-NET_ID = 'deeplab_largeFOV'  # model name
+expr_folder='/home/lchuang/experiment/pytorch_deeplab_resnet/spacenet_rgb_aoi_4'
+train_list_file = 'trainval_aug.txt'
+GTpath='/home/lchuang/Data/spacenet/voc_format/AOI_4_Shanghai_Train/annotations'
+IMpath='/home/lchuang/Data/spacenet/voc_format/AOI_4_Shanghai_Train/annotations'
+gpuid = 7
 
-import basic.basic as basic
+
 import basic.io_function as io_function
 import basic.calculate_meanvalue as calculate_meanvalue
 from basic.RSImage import RSImageclass
 from basic.RSImageProcess import RSImgProclass
 
 
-if os.path.isdir(expr) is False:
-    print 'error, % not exist '%expr
+if os.path.isdir(expr_folder) is False:
+    print 'error, % not exist '%expr_folder
     exit(1)
 
-run_deeplab.EXP = expr
-run_deeplab.DEV_ID = gpuid
-run_deeplab.NET_ID = NET_ID
-
 #TRAIN = 1
-train_file = os.path.join(expr,'list/train_aug.txt')
-test_file = os.path.join(expr,'list/test_aug.txt')
-train_prototxt_tem = os.path.join(expr,'config',NET_ID,'train.prototxt')
-train_solver_tem = os.path.join(expr,'config',NET_ID,'solver.prototxt')
-test_prototxt_tem = os.path.join(expr,'config',NET_ID,'test.prototxt')
+train_file = os.path.join(expr_folder,'train_list_file')
+# test_file = os.path.join(expr,'list/test_aug.txt')
 
-
+class SampleClass(object):
+    image = ''      # path of image
+    groudT = ''     # path of groud image
+    id = ''         # file ID
+# list of SampleClass
 test_data = []
 
 def cal_mean_value_of_each_band(train_file,test_file):
@@ -81,21 +80,13 @@ def cal_mean_value_of_each_band(train_file,test_file):
 
 def run_train():
     # train 1
-    run_deeplab.RUN_TEST = 0
-    # set other to be zeros
-    run_deeplab.RUN_TRAIN = 1
-    run_deeplab.RUN_TRAIN2 = 0
-    run_deeplab.RUN_TEST2 = 0
-    run_deeplab.RUN_SAVE = 0
-    run_deeplab.RUN_DENSECRF = 0
-    run_deeplab.GRID_SEARCH = 0
 
-    run_deeplab.main(None,None)
 
     pass
 
 
 def main():
+
     # need to run and set the mean value manully at first time
     # cal_mean_value_of_each_band(train_file,test_file)
 

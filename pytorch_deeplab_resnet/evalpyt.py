@@ -89,13 +89,13 @@ def run_evalpyt(gpu0,model_path,test_data,save_dir):
     band = 3
 
     # model_path = os.path.join('data/snapshots/', snapPrefix + str(iter) + '000.pth')
-    basic.outputlogMessage('the model used in this test is: %s'%model)
+    basic.outputlogMessage('the trained model file used in this test is: %s'%model_path)
     saved_state_dict = torch.load(model_path)
 
     model.load_state_dict(saved_state_dict)
 
     save_png_dir = save_dir
-    if os.path.isdir(save_png_dir):
+    if os.path.isdir(save_png_dir) is False:
         io_function.mkdir(save_png_dir)
 
     pytorch_list = []
@@ -129,6 +129,7 @@ def run_evalpyt(gpu0,model_path,test_data,save_dir):
         save_png = os.path.join(save_png_dir, test_sample.id +'.png')
         misc.imsave(save_png, result)
         result_list.append(save_png)
+        basic.outputlogMessage('saved %s'%save_png)
 
         # if args['--visualize']:
         #     plt.subplot(3, 1, 1)
@@ -140,7 +141,6 @@ def run_evalpyt(gpu0,model_path,test_data,save_dir):
         #     plt.show()
 
         png_path = test_sample.groudT
-
         if len(png_path)>0:
             gt = cv2.imread(png_path, 0)
             gt[gt == 255] = 0
