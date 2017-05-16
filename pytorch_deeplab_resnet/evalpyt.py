@@ -17,6 +17,7 @@ import matplotlib.pyplot as plt
 import torch.nn as nn
 
 import scipy.misc as misc
+import basic.io_function as io_function
 
 from docopt import docopt
 
@@ -91,6 +92,9 @@ for iter in range(1,11):   #TODO set the (different iteration)models that you wa
         print (snapPrefix)
     counter+=1
     model.load_state_dict(saved_state_dict)
+
+    save_png_dir = os.path.join('data', 'results', str(iter))
+    io_function.mkdir(save_png_dir)
 
     pytorch_list = [];
     for i in img_list:
