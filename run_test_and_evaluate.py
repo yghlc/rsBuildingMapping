@@ -111,20 +111,12 @@ def read_test_data(test_file,file_id=None):
                 sample.groudT = temp[1]
             test_data.append(sample)
 
-    basic.outputlogMessage('read test data completed, sample count %d'%len(test_data))
-    return True
-
-def run_test():
-    """
-    run test with pytorch_deeplab_resnet
-    :return: result file list
-    """
     # prepare file for pytorch_deeplab_resnet
     if len(test_data)< 1:
         basic.outputlogMessage('error, not input test data ')
         return False
 
-    # check all image file and ground true file, only keep the basename
+    # check all image file and ground true file
     for sample in test_data:
         # check image path
         image_basename = os.path.basename(sample.image)
@@ -142,6 +134,18 @@ def run_test():
 
         if len(sample.id)< 1:
             sample.id = os.path.splitext(image_basename)[0]
+
+    basic.outputlogMessage('read test data completed, sample count %d'%len(test_data))
+    return True
+
+def run_test():
+    """
+    run test with pytorch_deeplab_resnet
+    :return: result file list
+    """
+    if len(test_data) < 1:
+        basic.outputlogMessage('error, no input data in the list ')
+        return False
 
     find_model = model_finder(os.path.join(expr_folder,'data','snapshots'))
     if find_model is False:
@@ -239,9 +243,10 @@ def main():
         return False
 
     # result_list = run_test()
-    # if result_list is False:
-    #     return False
-    result_list = io_function.get_file_list_by_ext('.png',save_file_folder,bsub_folder=False)
+    result_list = io_function.get_file_list_by_ext('.png', save_file_folder, bsub_folder=False)
+    if result_list is False:
+        return False
+
 
 
     # get the deeplab output result, in png or tif format
