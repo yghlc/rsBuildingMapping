@@ -16,6 +16,8 @@ from tqdm import *
 import random
 from docopt import docopt
 
+import basic.io_function as io_function
+
 docstr = """Train ResNet-DeepLab on VOC12 (scenes) in pytorch using MSCOCO pretrained initialization 
 
 Usage: 
@@ -34,11 +36,6 @@ Options:
 """
 
 #    -b, --batchSize=<int>       num sample per batch [default: 1] currently only batch size of 1 is implemented, arbitrary batch size to be implemented soon
-args = docopt(docstr, version='v0.1')
-print(args)
-
-cudnn.enabled = False
-gpu0 = int(args['--gpu0'])
 
 
 def outS(i):
@@ -50,12 +47,12 @@ def outS(i):
     j = int((j+1)/2)  # python2 will return j as int, but python2 will return j as float, hlc
     return j
 
-def read_file(path_to_file):
-    with open(path_to_file) as f:
-        img_list = []
-        for line in f:
-            img_list.append(line[:-1])
-    return img_list
+# def read_file(path_to_file):
+#     with open(path_to_file) as f:
+#         img_list = []
+#         for line in f:
+#             img_list.append(line[:-1])
+#     return img_list
 
 def chunker(seq, size):
  return (seq[pos:pos+size] for pos in range(0,len(seq), size))
@@ -83,8 +80,8 @@ def scale_gt(img_temp,scale):
     return cv2.resize(img_temp,new_dims,interpolation = cv2.INTER_NEAREST).astype(float)
    
 def get_data_from_chunk_v2(chunk):
-    gt_path =  args['--GTpath']
-    img_path = args['--IMpath']
+    # gt_path =  args['--GTpath']
+    # img_path = args['--IMpath']
 
     scale = random.uniform(0.5, 1.3) #random.uniform(0.5,1.5) does not fit in a Titan X with the present version of pytorch, so we random scaling in the range (0.5,1.3)
     dim = int(scale*321)
@@ -93,7 +90,9 @@ def get_data_from_chunk_v2(chunk):
     for i,piece in enumerate(chunk):
         flip_p = random.uniform(0, 1)
         # img_temp = cv2.imread(os.path.join(img_path,piece+'.jpg')).astype(float)
-        img_temp = cv2.imread(os.path.join(img_path, piece + '.tif')).astype(float)
+        img_path = piece.image
+        # img_temp = cv2.imread(os.path.join(img_path, piece + '.tif')).astype(float)
+        img_temp = cv2.imread(img_path).astype(float)
         img_temp = cv2.resize(img_temp,(321,321)).astype(float)
         img_temp = scale_im(img_temp,scale)
         img_temp[:,:,0] = img_temp[:,:,0] - 104.008
@@ -103,8 +102,10 @@ def get_data_from_chunk_v2(chunk):
         images[:,:,:,i] = img_temp
 
         # gt_temp = cv2.imread(os.path.join(gt_path,piece+'.png'))[:,:,0]
-        png_path = os.path.join(gt_path, piece + 'segcls.png')
-        png_path = png_path.replace('_8bit','')
+
+        # png_path = os.path.join(gt_path, piece + 'segcls.png')
+        # png_path = png_path.replace('_8bit','')
+        png_path = piece.groudT
         gt_temp = cv2.imread(png_path)[:, :, 0]
         gt_temp[gt_temp == 255] = 0
         gt_temp = cv2.resize(gt_temp,(321,321) , interpolation = cv2.INTER_NEAREST)
@@ -193,62 +194,147 @@ def get_10x_lr_params(model):
         for i in b[j]:
             yield i
 
-if not os.path.exists('data/snapshots'):
-    os.makedirs('data/snapshots')
+def run_training(gpu0, init_model_path, traing_data,iter_size=10,base_lr=0.00025,weight_decay=0.0005,batch_size=1,max_iter=20000, snapshots_dir='data/snapshots'):
+
+    if io_function.is_file_exist(init_model_path) is False:
+        return False
+
+    cudnn.enabled = False
+
+    if not os.path.exists(snapshots_dir):
+        os.makedirs(snapshots_dir)
+
+    model = getattr(deeplab_resnet, 'Res_Deeplab')()
+    saved_state_dict = torch.load(init_model_path)
+    model.load_state_dict(saved_state_dict)
+
+    model.float()
+    model.eval()  # use_global_stats = True
+
+    # item contain:  image, groundT, id
+    img_list = [item for item in traing_data ]
+
+    data_list = []
+    for i in range(
+            10):  # make list for 10 epocs, though we will only use the first max_iter*batch_size entries of this list
+        np.random.shuffle(img_list)
+        data_list.extend(img_list)
+
+    model.cuda(gpu0)
+    criterion = nn.CrossEntropyLoss()  # use a Classification Cross-Entropy loss
+    optimizer = optim.SGD([{'params': get_1x_lr_params_NOscale(model), 'lr': base_lr},
+                           {'params': get_10x_lr_params(model), 'lr': 10 * base_lr}], lr=base_lr, momentum=0.9,
+                          weight_decay=weight_decay)
+
+    optimizer.zero_grad()
+    data_gen = chunker(data_list, batch_size)
+
+    for iter in range(max_iter + 1):
+        # chunk = data_gen.__next__()  # python3 hlc
+        chunk = data_gen.next()
+
+        images, label = get_data_from_chunk_v2(chunk)
+        images = Variable(images).cuda(gpu0)
+
+        out = model(images)
+        loss = loss_calc(out[0], label[0], gpu0)
+        # iter_size = int(args['--iterSize'])
+        for i in range(len(out) - 1):
+            loss = loss + loss_calc(out[i + 1], label[i + 1], gpu0)
+        loss = loss / iter_size
+        loss.backward()
+
+        if iter % 1 == 0:
+            print ('iter = ', iter, 'of', max_iter, 'completed, loss = ', iter_size * (loss.data.cpu().numpy()))
+
+        if iter % iter_size == 0:
+            optimizer.step()
+            lr_ = lr_poly(base_lr, iter, max_iter, 0.9)
+            print ('(poly lr policy) learning rate', lr_)
+            optimizer = optim.SGD([{'params': get_1x_lr_params_NOscale(model), 'lr': lr_},
+                                   {'params': get_10x_lr_params(model), 'lr': 10 * lr_}], lr=lr_, momentum=0.9,
+                                  weight_decay=weight_decay)
+            optimizer.zero_grad()
+
+        if iter % 1000 == 0 and iter != 0:
+            print ('taking snapshot ...')
+            torch.save(model.state_dict(), 'data/snapshots/spacenet_' + str(iter) + '.pth')
 
 
-model = getattr(deeplab_resnet,'Res_Deeplab')()
-saved_state_dict = torch.load('data/MS_DeepLab_resnet_pretrained_COCO_init.pth')
-model.load_state_dict(saved_state_dict)
+    pass
 
-max_iter = int(args['--maxIter']) 
-batch_size = 1
-weight_decay = float(args['--wtDecay'])
-base_lr = float(args['--lr'])
 
-model.float()
-model.eval() # use_global_stats = True
+if __name__ == '__main__':
 
-img_list = read_file(args['--LISTpath'])
+    args = docopt(docstr, version='v0.1')
+    print(args)
 
-data_list = []
-for i in range(10):  # make list for 10 epocs, though we will only use the first max_iter*batch_size entries of this list
-    np.random.shuffle(img_list)
-    data_list.extend(img_list)
+    cudnn.enabled = False
+    gpu0 = int(args['--gpu0'])
 
-model.cuda(gpu0)
-criterion = nn.CrossEntropyLoss() # use a Classification Cross-Entropy loss
-optimizer = optim.SGD([{'params': get_1x_lr_params_NOscale(model), 'lr': base_lr }, {'params': get_10x_lr_params(model), 'lr': 10*base_lr} ], lr = base_lr, momentum = 0.9,weight_decay = weight_decay)
+    if not os.path.exists('data/snapshots'):
+        os.makedirs('data/snapshots')
 
-optimizer.zero_grad()
-data_gen = chunker(data_list, batch_size)
+    model = getattr(deeplab_resnet, 'Res_Deeplab')()
+    saved_state_dict = torch.load('data/MS_DeepLab_resnet_pretrained_COCO_init.pth')
+    model.load_state_dict(saved_state_dict)
 
-for iter in range(max_iter+1):
-    #chunk = data_gen.__next__()  # python3 hlc
-    chunk = data_gen.next()
+    max_iter = int(args['--maxIter'])
+    batch_size = 1
+    weight_decay = float(args['--wtDecay'])
+    base_lr = float(args['--lr'])
 
-    images, label = get_data_from_chunk_v2(chunk)
-    images = Variable(images).cuda(gpu0)
+    model.float()
+    model.eval()  # use_global_stats = True
 
-    out = model(images)
-    loss = loss_calc(out[0], label[0],gpu0)
-    iter_size = int(args['--iterSize']) 
-    for i in range(len(out)-1):
-        loss = loss + loss_calc(out[i+1],label[i+1],gpu0)
-    loss = loss/iter_size 
-    loss.backward()
+    img_list = read_file(args['--LISTpath'])
 
-    if iter %1 == 0:
-        print ('iter = ',iter, 'of',max_iter,'completed, loss = ', iter_size*(loss.data.cpu().numpy()))
+    data_list = []
+    for i in range(
+            10):  # make list for 10 epocs, though we will only use the first max_iter*batch_size entries of this list
+        np.random.shuffle(img_list)
+        data_list.extend(img_list)
 
-    if iter % iter_size  == 0:
-        optimizer.step()
-        lr_ = lr_poly(base_lr,iter,max_iter,0.9)
-        print ('(poly lr policy) learning rate',lr_)
-        optimizer = optim.SGD([{'params': get_1x_lr_params_NOscale(model), 'lr': lr_ }, {'params': get_10x_lr_params(model), 'lr': 10*lr_} ], lr = lr_, momentum = 0.9,weight_decay = weight_decay)
-        optimizer.zero_grad()
+    model.cuda(gpu0)
+    criterion = nn.CrossEntropyLoss()  # use a Classification Cross-Entropy loss
+    optimizer = optim.SGD([{'params': get_1x_lr_params_NOscale(model), 'lr': base_lr},
+                           {'params': get_10x_lr_params(model), 'lr': 10 * base_lr}], lr=base_lr, momentum=0.9,
+                          weight_decay=weight_decay)
 
-    if iter % 1000 == 0 and iter!=0:
-        print ('taking snapshot ...')
-        torch.save(model.state_dict(),'data/snapshots/spacenet_'+str(iter)+'.pth')
+    optimizer.zero_grad()
+    data_gen = chunker(data_list, batch_size)
 
+    for iter in range(max_iter + 1):
+        # chunk = data_gen.__next__()  # python3 hlc
+        chunk = data_gen.next()
+
+        images, label = get_data_from_chunk_v2(chunk)
+        images = Variable(images).cuda(gpu0)
+
+        out = model(images)
+        loss = loss_calc(out[0], label[0], gpu0)
+        iter_size = int(args['--iterSize'])
+        for i in range(len(out) - 1):
+            loss = loss + loss_calc(out[i + 1], label[i + 1], gpu0)
+        loss = loss / iter_size
+        loss.backward()
+
+        if iter % 1 == 0:
+            print ('iter = ', iter, 'of', max_iter, 'completed, loss = ', iter_size * (loss.data.cpu().numpy()))
+
+        if iter % iter_size == 0:
+            optimizer.step()
+            lr_ = lr_poly(base_lr, iter, max_iter, 0.9)
+            print ('(poly lr policy) learning rate', lr_)
+            optimizer = optim.SGD([{'params': get_1x_lr_params_NOscale(model), 'lr': lr_},
+                                   {'params': get_10x_lr_params(model), 'lr': 10 * lr_}], lr=lr_, momentum=0.9,
+                                  weight_decay=weight_decay)
+            optimizer.zero_grad()
+
+        if iter % 1000 == 0 and iter != 0:
+            print ('taking snapshot ...')
+            torch.save(model.state_dict(), 'data/snapshots/spacenet_' + str(iter) + '.pth')
+
+
+
+    pass
