@@ -17,9 +17,11 @@ import matplotlib.pyplot as plt
 import torch.nn as nn
 
 import scipy.misc as misc
-import basic.io_function as io_function
+
 
 from docopt import docopt
+
+import basic.io_function as io_function
 
 docstr = """Evaluate ResNet-DeepLab with 5 branches on sketches of 11 categories (5 super categories)
 
