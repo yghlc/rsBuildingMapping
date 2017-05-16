@@ -97,14 +97,14 @@ for iter in range(1,11):   #TODO set the (different iteration)models that you wa
         img = np.zeros((663,663,3));
 
         # img_temp = cv2.imread(os.path.join(im_path,i[:-1]+'.jpg')).astype(float)
-        img_temp = cv2.imread(os.path.join(im_path, i[:-1] + '.tif')).astype(float)
+        img_temp = cv2.imread(os.path.join(im_path, i[:] + '.tif')).astype(float)
         img_original = img_temp
         img_temp[:,:,0] = img_temp[:,:,0] - 104.008
         img_temp[:,:,1] = img_temp[:,:,1] - 116.669
         img_temp[:,:,2] = img_temp[:,:,2] - 122.675
         img[:img_temp.shape[0],:img_temp.shape[1],:] = img_temp
         # gt = cv2.imread(os.path.join(gt_path,i[:-1]+'.png'),0)
-        png_path = os.path.join(gt_path, i[:-1] + 'segcls.png')
+        png_path = os.path.join(gt_path, i[:] + 'segcls.png')
         png_path = png_path.replace('_8bit','')
         gt = cv2.imread(png_path, 0)
         gt[gt==255] = 0
