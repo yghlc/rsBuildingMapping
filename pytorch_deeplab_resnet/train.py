@@ -83,7 +83,7 @@ def get_data_from_chunk_v2(chunk):
     # gt_path =  args['--GTpath']
     # img_path = args['--IMpath']
 
-    input_dim=350  #321
+    input_dim=330  #321
 
     scale = random.uniform(0.5, 1.3) #random.uniform(0.5,1.5) does not fit in a Titan X with the present version of pytorch, so we random scaling in the range (0.5,1.3)
     dim = int(scale*input_dim)
