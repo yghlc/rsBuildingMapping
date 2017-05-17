@@ -100,8 +100,10 @@ def run_evalpyt(gpu0,model_path,test_data,save_dir):
 
     pytorch_list = []
     result_list = []
+    count = 0
     for test_sample in test_data:
         img = np.zeros((663,663, band))
+        count = count +1
 
         img_path = test_sample.image
         # img_temp = cv2.imread(os.path.join(im_path,i[:-1]+'.jpg')).astype(float)
@@ -129,7 +131,7 @@ def run_evalpyt(gpu0,model_path,test_data,save_dir):
         save_png = os.path.join(save_png_dir, test_sample.id +'.png')
         misc.imsave(save_png, result)
         result_list.append(save_png)
-        basic.outputlogMessage('saved %s'%save_png)
+        basic.outputlogMessage('%d/%d : saved %s'%(count,len(test_data),save_png))
 
         # if args['--visualize']:
         #     plt.subplot(3, 1, 1)
@@ -149,6 +151,7 @@ def run_evalpyt(gpu0,model_path,test_data,save_dir):
 
     if len(pytorch_list) > 0:
         print ('pytorch', iter, np.sum(np.asarray(pytorch_list)) / len(pytorch_list))
+        basic.outputlogMessage('pytorch {} , {} \n'.format(iter, np.sum(np.asarray(pytorch_list)) / len(pytorch_list)))
 
     return result_list
 

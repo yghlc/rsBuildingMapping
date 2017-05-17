@@ -83,8 +83,10 @@ def get_data_from_chunk_v2(chunk):
     # gt_path =  args['--GTpath']
     # img_path = args['--IMpath']
 
+    input_dim=650  #321
+
     scale = random.uniform(0.5, 1.3) #random.uniform(0.5,1.5) does not fit in a Titan X with the present version of pytorch, so we random scaling in the range (0.5,1.3)
-    dim = int(scale*321)
+    dim = int(scale*input_dim)
     images = np.zeros((dim,dim,3,len(chunk)))
     gt = np.zeros((dim,dim,1,len(chunk)))
     for i,piece in enumerate(chunk):
@@ -93,7 +95,7 @@ def get_data_from_chunk_v2(chunk):
         img_path = piece.image
         # img_temp = cv2.imread(os.path.join(img_path, piece + '.tif')).astype(float)
         img_temp = cv2.imread(img_path).astype(float)
-        img_temp = cv2.resize(img_temp,(321,321)).astype(float)
+        img_temp = cv2.resize(img_temp,(input_dim,input_dim)).astype(float)
         img_temp = scale_im(img_temp,scale)
         img_temp[:,:,0] = img_temp[:,:,0] - 104.008
         img_temp[:,:,1] = img_temp[:,:,1] - 116.669
@@ -108,12 +110,12 @@ def get_data_from_chunk_v2(chunk):
         png_path = piece.groudT
         gt_temp = cv2.imread(png_path)[:, :, 0]
         gt_temp[gt_temp == 255] = 0
-        gt_temp = cv2.resize(gt_temp,(321,321) , interpolation = cv2.INTER_NEAREST)
+        gt_temp = cv2.resize(gt_temp,(input_dim,input_dim) , interpolation = cv2.INTER_NEAREST)
         gt_temp = scale_gt(gt_temp,scale)
         gt_temp = flip(gt_temp,flip_p)
         gt[:,:,0,i] = gt_temp
-        a = outS(321*scale)#41
-        b = outS(321*0.5*scale)#21
+        a = outS(input_dim*scale)#41
+        b = outS(input_dim*0.5*scale)#21
     labels = [resize_label_batch(gt,i) for i in [a,a,b,a]]
     images = images.transpose((3,2,0,1))
     images = torch.from_numpy(images).float()
