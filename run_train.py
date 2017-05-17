@@ -156,7 +156,7 @@ def run_train():
         return False
 
     init_model_path ='data/MS_DeepLab_resnet_pretrained_COCO_init.pth'
-    train.run_training(gpuid,init_model_path,train_data,batch_size=2)
+    train.run_training(gpuid,init_model_path,train_data,batch_size=1)
 
     pass
 
