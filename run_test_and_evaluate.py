@@ -18,7 +18,8 @@ sys.path.insert(0, codes_path)
 
 # modify this if necessary
 expr_folder=HOME+'/experiment/pytorch_deeplab_resnet/spacenet_rgb_aoi_4'
-test_list_file = 'val.txt'
+# test_list_file = 'val.txt'
+test_list_file = 'test_aug.txt'
 GTpath=HOME+'/Data/spacenet/voc_format/AOI_4_Shanghai_Train/annotations'
 IMpath=HOME+'/Data/spacenet/voc_format/AOI_4_Shanghai_Train/annotations'
 gpuid = 7
