@@ -24,10 +24,10 @@ cp ${dir}/spacenet_rgb_aoi_2-4/model/deeplab_largeFOV/train_iter_48000.caffemode
 cp -r ~/experiment/caffe_deeplab/spacenet_rgb_aoi_2-4/config .
 
 # run fine train with deeplab
-cp ~/codes/rsBuildingSeg/run_train.py .
+cp ~/codes/rsBuildingSeg/DeepLab-Context/run_train.py .
 python run_train.py ${dir}/${city}  ${gpuid}
 
 # run test on Test public data
-cp ~/codes/rsBuildingSeg/run_test_and_evaluate.py .
+cp ~/codes/rsBuildingSeg/DeepLab-Context/run_test_and_evaluate.py .
 python run_test_and_evaluate ${dir}/${city}  ${gpuid}
 cd ..
