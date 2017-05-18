@@ -25,9 +25,7 @@ gpuid = 7
 
 import basic.io_function as io_function
 import basic.basic as basic
-import basic.calculate_meanvalue as calculate_meanvalue
-from basic.RSImage import RSImageclass
-from basic.RSImageProcess import RSImgProclass
+# import basic.calculate_meanvalue as calculate_meanvalue
 
 import pytorch_deeplab_resnet.train as train
 
@@ -88,7 +86,7 @@ def read_train_data(train_file,file_id=None):
 
     # prepare file for pytorch_deeplab_resnet
     if len(train_data)< 1:
-        basic.outputlogMessage('error, not input test data ')
+        basic.outputlogMessage('error, not input train data ')
         return False
 
     # check all image file and ground true file
