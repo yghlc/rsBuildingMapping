@@ -592,7 +592,7 @@ def convert_wgs84geojson_to_pixgeojson(wgs84geojson, inputraster, image_id=[], p
                                              'polyPix': ogr.CreateGeometryFromWkt('POLYGON EMPTY')
                                              })
             else:
-                print("error, no File exists, file path: "%inputraster)
+                print("error, no File exists, file path: %s"%inputraster)
                 pass
         if pixelgeojson:
             exporttogeojson(pixelgeojson, buildinglist=buildinglist)
