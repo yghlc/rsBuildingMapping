@@ -3,6 +3,7 @@
 # exe in ~/experiment/caffe_deeplab on ee server
 dir=/home/lchuang/experiment/caffe_deeplab
 city=spacenet_rgb_aoi_2_test
+gpuid=6
 
 # prepare list
 cp -r cp_exper/${city} .
@@ -24,9 +25,9 @@ cp -r ~/experiment/caffe_deeplab/spacenet_rgb_aoi_2-4/config .
 
 # run fine train with deeplab
 cp ~/codes/rsBuildingSeg/run_train.py .
-python run_train.py ${dir}/${city}  6
+python run_train.py ${dir}/${city}  ${gpuid}
 
 # run test on Test public data
 cp ~/codes/rsBuildingSeg/run_test_and_evaluate.py .
-python run_test_and_evaluate ${dir}/${city}  6
+python run_test_and_evaluate ${dir}/${city}  ${gpuid}
 cd ..
