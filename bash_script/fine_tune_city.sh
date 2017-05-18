@@ -31,3 +31,6 @@ python run_train.py ${dir}/${city}  ${gpuid}
 cp ~/codes/rsBuildingSeg/DeepLab-Context/run_test_and_evaluate.py .
 python run_test_and_evaluate ${dir}/${city}  ${gpuid}
 cd ..
+
+#cp csv
+cp ${dir}/${city}/features/deeplab_largeFOV/val/fc8/result_buildings.csv resut_csv/resut_${city}.csv
