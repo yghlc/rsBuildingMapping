@@ -33,4 +33,4 @@ python run_test_and_evaluate ${dir}/${city}  ${gpuid}
 cd ..
 
 #cp csv
-cp ${dir}/${city}/features/deeplab_largeFOV/val/fc8/result_buildings.csv resut_csv/resut_${city}.csv
+cp ${dir}/${city}/features/deeplab_largeFOV/val/fc8/result_buildings.csv result_csv/result_${city}.csv
