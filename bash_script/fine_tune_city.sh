@@ -29,7 +29,7 @@ python run_train.py ${dir}/${city}  ${gpuid}
 
 # run test on Test public data
 cp ~/codes/rsBuildingSeg/DeepLab-Context/run_test_and_evaluate.py .
-python run_test_and_evaluate ${dir}/${city}  ${gpuid}
+python run_test_and_evaluate.py ${dir}/${city}  ${gpuid}
 cd ..
 
 #cp csv
