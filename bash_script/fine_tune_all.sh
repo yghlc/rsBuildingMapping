@@ -14,7 +14,7 @@ mkdir result_csv
 
 for AOI in ${AOI_2}  ${AOI_3} ${AOI_4} ${AOI_5}
 do
-        ./fine_tune_city_cmd.sh ${AOI}
+        ./fine_tune_city.sh ${AOI}
 done
 
 cd result_csv
