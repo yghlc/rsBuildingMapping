@@ -2,7 +2,9 @@
 
 # exe in ~/experiment/caffe_deeplab on ee server
 dir=/home/lchuang/experiment/caffe_deeplab
-city=spacenet_rgb_aoi_2_test
+#city=spacenet_rgb_aoi_4_test
+city=$1
+echo $city
 gpuid=6
 
 # prepare list
