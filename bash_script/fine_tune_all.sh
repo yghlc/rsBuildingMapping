@@ -11,7 +11,7 @@ do
 done
 
 cd result_csv
-cp ~/codes/rsBuildingMapping/basic/delete_csv_column.py
+cp ~/codes/rsBuildingMapping/basic/delete_csv_column.py .
 cp ~/codes/rsBuildingMapping/basic/basic.py .
 cp ~/codes/rsBuildingMapping/basic/io_function.py .
 python delete_csv_column.py result_${AOI_2}.csv result_${AOI_3}.csv result_${AOI_4}.csv result_${AOI_5}.csv
