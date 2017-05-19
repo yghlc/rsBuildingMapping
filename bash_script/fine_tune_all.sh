@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# train on all files
+cd spacenet_rgb_aoi_2-4
+./exe.sh
+cd ..
+
 AOI_2=spacenet_rgb_aoi_2_test
 AOI_3=spacenet_rgb_aoi_3_test
 AOI_4=spacenet_rgb_aoi_4_test
