@@ -80,9 +80,9 @@ def read_train_data(train_file,file_id=None):
             temp = f_lines[i].split()
             sample = SampleClass()
             sample.image = temp[0]
-            if len(temp) > 1:
-                sample.groudT = temp[1]
-                train_data.append(sample)
+
+            sample.groudT = temp[1]
+            train_data.append(sample)
 
     # prepare file for pytorch_deeplab_resnet
     if len(train_data)< 1:
