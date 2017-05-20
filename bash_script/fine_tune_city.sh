@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
 # exe in ~/experiment/caffe_deeplab on ee server
-dir=/home/lchuang/experiment/caffe_deeplab
+dir=~/experiment/caffe_deeplab
 #city=spacenet_rgb_aoi_4_test
 city=$1
+echo $dir
 echo $city
 gpuid=6
 
@@ -21,7 +22,7 @@ cd ..
 #prepare model
 mkdir model
 mkdir model/deeplab_largeFOV
-cp ${dir}/spacenet_rgb_aoi_2-4/model/deeplab_largeFOV/train_iter_48000.caffemodel model/deeplab_largeFOV/init.caffemodel
+cp ${dir}/spacenet_rgb_aoi_2-4/model/deeplab_largeFOV/train_iter_6000.caffemodel model/deeplab_largeFOV/init.caffemodel
 
 #prepare config
 cp -r ~/experiment/caffe_deeplab/spacenet_rgb_aoi_2-4/config .
@@ -29,6 +30,13 @@ cp -r ~/experiment/caffe_deeplab/spacenet_rgb_aoi_2-4/config .
 # run fine train with deeplab
 cp ~/codes/rsBuildingSeg/DeepLab-Context/run_train.py .
 python run_train.py ${dir}/${city}  ${gpuid}
+
+# produce the edge map of Test public data
+mkdir edge
+cd edge
+cp ~/codes/rcf/examples/rcf_building_edge/edge.sh .
+./edge.sh ../list/val.txt ${gpuid}
+cd ..
 
 # run test on Test public data
 cp ~/codes/rsBuildingSeg/DeepLab-Context/run_test_and_evaluate.py .
