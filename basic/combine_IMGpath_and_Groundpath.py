@@ -37,7 +37,7 @@ def combine_IMGpath_and_Groundpath(img_only_list_file,img_groud_true_list_file,r
             bfound = False
             if save_line.find(imgid) >= 0:
                 temp = save_line.split()
-                write_line = line + ' ' +temp[1]
+                write_line = line + ' ' +temp[1] +'\n'
                 bfound = True
                 break
         if bfound:
