@@ -9,6 +9,9 @@ add time: 21 May, 2017
 """
 from optparse import OptionParser
 import os
+HOME = os.path.expanduser('~')
+codes_path = HOME+'/codes/rsBuildingMapping'
+sys.path.insert(0, codes_path)
 import basic.basic as basic
 import basic.io_function as io_function
 
