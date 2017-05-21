@@ -59,8 +59,8 @@ def main(options, args):
 
     img_only = args[0]
     img_groud_true = args[1]
-
-    f_img_only =  open()
+    save_path =  args[2]
+    combine_IMGpath_and_Groundpath(img_only,img_groud_true,save_path)
 
 
 if __name__=='__main__':
