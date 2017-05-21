@@ -35,7 +35,7 @@ def combine_IMGpath_and_Groundpath(img_only_list_file,img_groud_true_list_file,r
         write_line = ''
         for save_line in mg_ground_lines:
             bfound = False
-            if save_line.find(imgid) >= 0:
+            if save_line.find(imgid+'segcls.png') >= 0:
                 temp = save_line.split()
                 write_line = line + ' ' +temp[1] +'\n'
                 bfound = True
