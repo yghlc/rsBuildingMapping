@@ -27,7 +27,7 @@ cp ${dir}/spacenet_rgb_aoi_2-4/list/replace_wrong_path.py .
 cat train_aug.txt test_aug.txt > train_aug_all.txt
 cp train_aug_all.txt train_aug.txt
 
-exit
+
 
 #change RGB-PanSharpen_8bit to MUL-PanSharpen_8bit in the list
 # train images
@@ -35,11 +35,12 @@ find ${dir_MUL_Pan_8bit}/AOI_${num}_*_Train/MUL-PanSharpen_8bit/*.tif > trainimg
 find ${dir_MUL_Pan_8bit}/AOI_${num}_*_Test_public/MUL-PanSharpen_8bit/*.tif > valimg_mul_pan_8bit.txt
 
 python ~/codes/rsBuildingMapping/basic/combine_IMGpath_and_Groundpath.py trainimg_mul_pan_8bit.txt train_aug.txt save_train.txt
-python ~/codes/rsBuildingMapping/basic/combine_IMGpath_and_Groundpath.py valimg_mul_pan_8bit.txt val.txt save_val.txt
+
 mv train_aug.txt train_aug_old.txt
 cp save_train.txt train_aug.txt
 mv val.txt  val_old.txt
-cp save_val.txt val.txt
+# valimg_mul_pan_8bit.txt don't have ground true
+cp valimg_mul_pan_8bit.txt val.txt
 
 bash ~/codes/rsBuildingMapping/bash_script/extract_fileid.sh val
 
