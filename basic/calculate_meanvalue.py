@@ -20,15 +20,24 @@ import basic, io_function
 import RSImage
 from RSImage import RSImageclass
 
-def cal_the_mean_of_bands(input_path):
 
+def get_first_path_in_line(input_path):
     # if multi files in one line, then only consider the first file
     image_path = input_path
     if os.path.isfile(image_path) is False:
         image_path = image_path.split()[0]  # only consider first image
         if os.path.isfile(image_path) is False:
-            basic.outputlogMessage('File not exist %s '%image_path)
+            basic.outputlogMessage('File not exist %s ' % image_path)
             return False
+    return image_path
+
+
+def cal_the_mean_of_bands(input_path):
+
+    # if multi files in one line, then only consider the first file
+    image_path = get_first_path_in_line(input_path)
+    if image_path is False:
+        return False
 
     img_obj = RSImageclass()
     if img_obj.open(image_path):
@@ -50,7 +59,10 @@ def calculate_mean_of_images(images_list):
         return False
     # get band number
     img_obj = RSImageclass()
-    img_obj.open(images_list[0])
+    first_img = get_first_path_in_line(images_list[0])
+    if first_img is False:
+        return False
+    img_obj.open(first_img)
     band_count = img_obj.GetBandCount()
     img_obj = None
 
@@ -92,7 +104,7 @@ def calculate_mean_of_images(images_list):
 def main(options, args):
 
     input_path = args[0]
-    if io_function.is_folder_exist(input_path) is True:
+    if os.path.isdir(input_path) is True:
         if options.ext is None:
             basic.outputlogMessage('image file extenstion is need, type help for more information')
             return False
@@ -101,7 +113,7 @@ def main(options, args):
         f_obj = open('images_list.txt','w')
         f_obj.writelines(["%s\n" % item for item in file_list])
         f_obj.close()
-    elif io_function.is_file_exist(input_path):
+    elif os.path.isfile(input_path):
         f_obj = open(input_path,'r')
         file_list = f_obj.readlines()
         f_obj.close()
