@@ -8,9 +8,16 @@ email:huanglingcao@gmail.com
 add time: 24 April, 2017
 """
 
+import os,sys
+
+
+HOME = os.path.expanduser('~')
+codes_path = HOME+'/codes/rsBuildingMapping'
+sys.path.insert(0, codes_path)
+sys.path.insert(0, os.path.join(codes_path,'basic'))
+
 from optparse import OptionParser
 import basic, io_function
-
 import csv
 
 def delete_fouth_coloumn_csv(csv_path):
