@@ -7,7 +7,7 @@ dir_MUL_Pan_16bit=~/Data/spacenet
 pre_trained=${dir}/spacenet_rgb_aoi_2-4/model/deeplab_largeFOV/train_iter_48000.caffemodel
 
 # true when on server
-is_server=false
+is_server=true
 
 upcodes.sh
 
