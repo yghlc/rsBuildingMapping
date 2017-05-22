@@ -6,16 +6,17 @@ dir=~/experiment/caffe_deeplab
 city=$1
 echo $dir
 echo $city
-gpuid=6
+gpuid=$2
 
 
 cd ~/codes/rsBuildingSeg
 git pull
 cd -
 
+cd ${dir}/${city}
+
 # run fine train with deeplab
-cp ~/codes/rsBuildingSeg/DeepLab-Context/run_train.py .
-python run_train.py ${dir}/${city}  ${gpuid}
+python ~/codes/rsBuildingSeg/DeepLab-Context/run_train.py ${dir}/${city}  ${gpuid}
 
 # produce the edge map of Test public data
 #mkdir edge
@@ -25,8 +26,9 @@ python run_train.py ${dir}/${city}  ${gpuid}
 #cd ..
 
 # run test on Test public data
-cp ~/codes/rsBuildingSeg/DeepLab-Context/run_test_and_evaluate.py .
-python run_test_and_evaluate.py ${dir}/${city}  ${gpuid}
+cp
+python ~/codes/rsBuildingSeg/DeepLab-Context/run_test_and_evaluate.py ${dir}/${city}  ${gpuid}
+
 cd ..
 
 #cp csv
