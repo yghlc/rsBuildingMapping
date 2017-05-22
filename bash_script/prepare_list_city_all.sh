@@ -3,6 +3,7 @@
 # run in ~/experiment/caffe_deeplab/
 dir=~/experiment/caffe_deeplab
 dir_MUL_Pan_8bit=~/Data/aws_SpaceNet/voc_format
+dir_MUL_Pan_16bit=~/Data/spacenet
 pre_trained=${dir}/spacenet_rgb_aoi_2-4/model/deeplab_largeFOV/train_iter_48000.caffemodel
 
 # true when on server
@@ -16,7 +17,8 @@ AOI_4=4
 AOI_5=5
 
  #${AOI_3} ${AOI_4} ${AOI_5}
-for num in ${AOI_3} ${AOI_5} ${AOI_2}  ${AOI_4}
+ ${AOI_5} ${AOI_2}  ${AOI_4}
+for num in ${AOI_3}
 do
 city=spacenet_rgb_aoi_${num}_test
 echo "current city: " ${city}
@@ -27,10 +29,14 @@ cd ${city}/list
 cat train_aug.txt test_aug.txt > train_aug_all.txt
 cp train_aug_all.txt train_aug.txt
 
+if [ "$is_server" = true ] ; then
 #change RGB-PanSharpen_8bit to MUL-PanSharpen_8bit in the list
-# train images
 find ${dir_MUL_Pan_8bit}/AOI_${num}_*_Train/MUL-PanSharpen_8bit/*.tif > trainimg_mul_pan_8bit.txt
 find ${dir_MUL_Pan_8bit}/AOI_${num}_*_Test_public/MUL-PanSharpen_8bit/*.tif > valimg_mul_pan_8bit.txt
+else
+find ${dir_MUL_Pan_16bit}/AOI_${num}_*_Train/MUL-PanSharpen/*.tif > trainimg_mul_pan_8bit.txt
+find ${dir_MUL_Pan_16bit}/AOI_${num}_*_Test_public/MUL-PanSharpen/*.tif > valimg_mul_pan_8bit.txt
+fi
 
 python ~/codes/rsBuildingMapping/basic/combine_IMGpath_and_Groundpath.py trainimg_mul_pan_8bit.txt train_aug.txt save_train.txt
 
