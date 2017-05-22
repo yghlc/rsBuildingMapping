@@ -9,10 +9,15 @@ output_root=${HOME}/Data/spacenet_voc_format
 python_script=${HOME}/codes/rsBuildingMapping/SpaceNetChallenge/utilities/python/createDataSpaceNet.py
 
 #${spacenet_root}
-AOI_2=AOI_2_Vegas_Test_public
-AOI_3=AOI_3_Paris_Test_public
-AOI_4=AOI_4_Shanghai_Test_public
-AOI_5=AOI_5_Khartoum_Test_public
+#AOI_2=AOI_2_Vegas_Test_public
+#AOI_3=AOI_3_Paris_Test_public
+#AOI_4=AOI_4_Shanghai_Test_public
+#AOI_5=AOI_5_Khartoum_Test_public
+
+AOI_2=AOI_2_Vegas_Train
+AOI_3=AOI_3_Paris_Train
+AOI_4=AOI_4_Shanghai_Train
+AOI_5=AOI_5_Khartoum_Train
 
 # remove previous success_save.txt file
 rm success_save.txt
