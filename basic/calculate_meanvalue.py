@@ -20,7 +20,16 @@ import basic, io_function
 import RSImage
 from RSImage import RSImageclass
 
-def cal_the_mean_of_bands(image_path):
+def cal_the_mean_of_bands(input_path):
+
+    # if multi files in one line, then only consider the first file
+    image_path = input_path
+    if os.path.isfile(image_path) is False:
+        image_path = image_path.split()[0]  # only consider first image
+        if os.path.isfile(image_path) is False:
+            basic.outputlogMessage('File not exist %s '%image_path)
+            return False
+
     img_obj = RSImageclass()
     if img_obj.open(image_path):
         width = img_obj.GetWidth()
