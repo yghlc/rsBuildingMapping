@@ -2,7 +2,7 @@
 
 # train on all files
 cd spacenet_rgb_aoi_2-4
-./exe.sh
+#./exe.sh
 cd ..
 
 AOI_2=spacenet_rgb_aoi_2_test

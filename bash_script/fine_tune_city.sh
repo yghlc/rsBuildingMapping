@@ -8,16 +8,6 @@ echo $dir
 echo $city
 gpuid=6
 
-# prepare list
-cp -r cp_exper/${city} .
-cd ${city}/list
-cp ${dir}/spacenet_rgb_aoi_2-4/list/replace_wrong_path.py .
-
-cat train_aug.txt test_aug.txt > train_aug_all.txt
-cp train_aug_all.txt train_aug.txt
-python replace_wrong_path.py train_aug.txt
-python replace_wrong_path.py val.txt
-cd ..
 
 #prepare model
 mkdir model
