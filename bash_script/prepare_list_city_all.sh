@@ -27,6 +27,8 @@ cp ${dir}/spacenet_rgb_aoi_2-4/list/replace_wrong_path.py .
 cat train_aug.txt test_aug.txt > train_aug_all.txt
 cp train_aug_all.txt train_aug.txt
 
+exit
+
 #change RGB-PanSharpen_8bit to MUL-PanSharpen_8bit in the list
 # train images
 find ${dir_MUL_Pan_8bit}/AOI_${num}_*_Train/MUL-PanSharpen_8bit/*.tif > trainimg_mul_pan_8bit.txt
@@ -49,8 +51,7 @@ if [ "$is_server" = true ] ; then
 fi
 
 
-cd ..
-
+cd ../..
 
 # calculate mean value
 
