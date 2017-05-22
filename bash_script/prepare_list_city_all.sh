@@ -17,8 +17,8 @@ AOI_4=4
 AOI_5=5
 
  #${AOI_3} ${AOI_4} ${AOI_5}
- ${AOI_5} ${AOI_2}  ${AOI_4}
-for num in ${AOI_3}
+ #${AOI_3}
+for num in ${AOI_5} ${AOI_2}  ${AOI_4}
 do
 city=spacenet_rgb_aoi_${num}_test
 echo "current city: " ${city}
