@@ -29,7 +29,7 @@ cd ${city}/list
 cat train_aug.txt test_aug.txt > train_aug_all.txt
 cp train_aug_all.txt train_aug.txt
 
-if [ "$is_server" = true ] ; then
+if [ "$is_server" = false ] ; then
 #change RGB-PanSharpen_8bit to MUL-PanSharpen_8bit in the list
 find ${dir_MUL_Pan_8bit}/AOI_${num}_*_Train/MUL-PanSharpen_8bit/*.tif > trainimg_mul_pan_8bit.txt
 find ${dir_MUL_Pan_8bit}/AOI_${num}_*_Test_public/MUL-PanSharpen_8bit/*.tif > valimg_mul_pan_8bit.txt
