@@ -51,10 +51,13 @@ if [ "$is_server" = true ] ; then
     python replace_wrong_path.py val.txt
 fi
 
+# calculate mean value
+cat train_aug.txt val.txt > cal_mean.txt
+python ~/codes/rsBuildingMapping/basic/calculate_meanvalue.py cal_mean.txt
+cp mean_value.txt ../config/deeplab_largeFOV/.
 
 cd ../..
 
-# calculate mean value
 
 
 done
