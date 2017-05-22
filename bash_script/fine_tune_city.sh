@@ -9,14 +9,6 @@ echo $city
 gpuid=6
 
 
-#prepare model
-mkdir model
-mkdir model/deeplab_largeFOV
-cp ${dir}/spacenet_rgb_aoi_2-4/model/deeplab_largeFOV/train_iter_48000.caffemodel model/deeplab_largeFOV/init.caffemodel
-
-#prepare config
-cp -r ~/experiment/caffe_deeplab/spacenet_rgb_aoi_2-4/config .
-
 cd ~/codes/rsBuildingSeg
 git pull
 cd -

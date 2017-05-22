@@ -3,6 +3,7 @@
 # run in ~/experiment/caffe_deeplab/
 dir=~/experiment/caffe_deeplab
 dir_MUL_Pan_8bit=~/Data/aws_SpaceNet/voc_format
+pre_trained=${dir}/spacenet_rgb_aoi_2-4/model/deeplab_largeFOV/train_iter_48000.caffemodel
 
 # true when on server
 is_server=false
@@ -26,8 +27,6 @@ cd ${city}/list
 cp ${dir}/spacenet_rgb_aoi_2-4/list/replace_wrong_path.py .
 cat train_aug.txt test_aug.txt > train_aug_all.txt
 cp train_aug_all.txt train_aug.txt
-
-
 
 #change RGB-PanSharpen_8bit to MUL-PanSharpen_8bit in the list
 # train images
@@ -56,8 +55,17 @@ cat train_aug.txt val.txt > cal_mean.txt
 python ~/codes/rsBuildingMapping/basic/calculate_meanvalue.py cal_mean.txt
 cp mean_value.txt ../config/deeplab_largeFOV/.
 
-cd ../..
+cd ..
 
+#prepare model
+mkdir model
+mkdir model/deeplab_largeFOV
+cp ${pre_trained} model/deeplab_largeFOV/init.caffemodel
+
+#prepare config
+cp -r ${dir}/spacenet_rgb_aoi_2-4/config .
+
+cd ..
 
 
 done
