@@ -8,6 +8,10 @@ email:huanglingcao@gmail.com
 add time: 17 April, 2017
 """
 
+import os
+
+HOME = os.path.expanduser('~')
+codes_path = HOME+'/codes/rsBuildingMapping'
 
 from optparse import OptionParser
 import basic, io_function
