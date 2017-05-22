@@ -24,7 +24,6 @@ echo "current city: " ${city}
 # prepare list
 cp -r cp_exper/${city} .
 cd ${city}/list
-cp ${dir}/spacenet_rgb_aoi_2-4/list/replace_wrong_path.py .
 cat train_aug.txt test_aug.txt > train_aug_all.txt
 cp train_aug_all.txt train_aug.txt
 
@@ -46,8 +45,8 @@ bash ~/codes/rsBuildingMapping/bash_script/extract_fileid.sh val
 
 if [ "$is_server" = true ] ; then
     echo 'Replace the file path, because the above codes get new path, so it only replace the path of ground true'
-    python replace_wrong_path.py train_aug.txt
-    python replace_wrong_path.py val.txt
+    python ~/codes/rsBuildingMapping/replace_wrong_path.py train_aug.txt
+    python ~/codes/rsBuildingMapping/replace_wrong_path.py val.txt
 fi
 
 # calculate mean value
