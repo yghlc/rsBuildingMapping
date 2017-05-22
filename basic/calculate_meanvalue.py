@@ -94,6 +94,7 @@ def calculate_mean_of_images(images_list):
         basic.outputlogMessage('band {}: mean {}'.format(i+1, mean_of_images[i]))
 
     f_obj =  open('mean_value.txt','w')
+    f_obj.writelines('total image count {} \n'.format(len(images_list)))
     for i in range(0,len(mean_of_images)):
         f_obj.writelines('band {} \n'.format(i + 1))
     for i in range(0,len(mean_of_images)):
