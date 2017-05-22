@@ -3,7 +3,7 @@
 #spacenet_root=${HOME}/Data/aws_SpaceNet/un_gz
 #output_root=${HOME}/Data/aws_SpaceNet/voc_format
 spacenet_root=${HOME}/Data/spacenet
-output_root=${HOME}/Data/spacenet/voc_format
+output_root=${HOME}/Data/spacenet_voc_format
 
 
 python_script=${HOME}/codes/rsBuildingMapping/SpaceNetChallenge/utilities/python/createDataSpaceNet.py
