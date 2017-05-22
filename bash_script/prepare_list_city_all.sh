@@ -37,7 +37,7 @@ find ${dir_MUL_Pan_8bit}/AOI_${num}_*_Test_public/MUL-PanSharpen_8bit/*.tif > va
 python ~/codes/rsBuildingMapping/basic/combine_IMGpath_and_Groundpath.py trainimg_mul_pan_8bit.txt train_aug.txt save_train.txt
 python ~/codes/rsBuildingMapping/basic/combine_IMGpath_and_Groundpath.py valimg_mul_pan_8bit.txt val.txt save_val.txt
 mv train_aug.txt train_aug_old.txt
-cp save_train.tx train_aug.txt
+cp save_train.txt train_aug.txt
 mv val.txt  val_old.txt
 cp save_val.txt val.txt
 
