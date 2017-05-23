@@ -23,7 +23,7 @@ if [ "$bresuming" = false ] ; then
 python ${deeplab}/run_train.py ${dir}/${city}  ${gpuid}
 else
 # get latest solverstate file
-newest_solverstate=$(ls -t ${dir}/${city}/model/deeplab_largeFOV/*.solverstate | head -1)
+newest_solverstate=$(ls -t ${dir}/${city}/model/${net}/*.solverstate | head -1)
 echo "resuming with:" ${newest_solverstate}
 ${deeplab}/.build_release/tools/caffe.bin  train --solver=${dir}/${city}/config/${net}/solver_train_aug.prototxt --snapshot=${newest_solverstate}
 fi
@@ -42,4 +42,4 @@ python ~/codes/rsBuildingSeg/DeepLab-Context/run_test_and_evaluate.py ${dir}/${c
 cd ..
 
 #cp csv
-cp ${dir}/${city}/features/deeplab_largeFOV/val/fc8/result_buildings.csv result_csv/result_${city}.csv
+cp ${dir}/${city}/features/${net}/val/fc8/result_buildings.csv result_csv/result_${city}.csv
