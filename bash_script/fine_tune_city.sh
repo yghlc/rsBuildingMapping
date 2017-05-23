@@ -26,7 +26,6 @@ python ~/codes/rsBuildingSeg/DeepLab-Context/run_train.py ${dir}/${city}  ${gpui
 #cd ..
 
 # run test on Test public data
-cp
 python ~/codes/rsBuildingSeg/DeepLab-Context/run_test_and_evaluate.py ${dir}/${city}  ${gpuid}
 
 cd ..
