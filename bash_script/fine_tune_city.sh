@@ -36,6 +36,11 @@ fi
 #./edge.sh ../list/val.txt ${gpuid}
 #cd ..
 
+# clean previous result
+rm ${dir}/${city}/features/${net}/val/fc8/*.mat
+rm ${dir}/${city}/features/${net}/val/fc8/*.png
+rm -r ${dir}/${city}/features/${net}/val/fc8/geojson
+rm -r ${dir}/${city}/features/${net}/val/fc8/geojson_without_fix
 # run test on Test public data
 python ~/codes/rsBuildingSeg/DeepLab-Context/run_test_and_evaluate.py ${dir}/${city}  ${gpuid}
 
