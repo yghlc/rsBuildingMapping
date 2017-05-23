@@ -25,7 +25,7 @@ else
 # get latest solverstate file
 newest_solverstate=$(ls -t ${dir}/${city}/model/${net}/*.solverstate | head -1)
 echo "resuming with:" ${newest_solverstate}
-${deeplab}/.build_release/tools/caffe.bin  train --solver=${dir}/${city}/config/${net}/solver_train_aug.prototxt --snapshot=${newest_solverstate}
+${deeplab}/.build_release/tools/caffe.bin  train --solver=${dir}/${city}/config/${net}/solver_train_aug.prototxt --snapshot=${newest_solverstate} -gpu ${gpuid}
 fi
 
 
