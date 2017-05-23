@@ -47,6 +47,7 @@ rm ${dir}/${city}/features/${net}/val/fc8/*.mat
 rm ${dir}/${city}/features/${net}/val/fc8/*.png
 rm -r ${dir}/${city}/features/${net}/val/fc8/geojson
 rm -r ${dir}/${city}/features/${net}/val/fc8/geojson_without_fix
+rm ${dir}/${city}/features/${net}/val/fc8/result_buildings.csv
 # run test on Test public data
 python ~/codes/rsBuildingSeg/DeepLab-Context/run_test_and_evaluate.py ${dir}/${city}  ${gpuid}
 fi
