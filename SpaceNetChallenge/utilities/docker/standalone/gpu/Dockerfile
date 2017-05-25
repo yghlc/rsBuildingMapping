@@ -56,6 +56,7 @@ ENV HOME=/home/hlc
 # Download codes and install
 WORKDIR $HOME/codes
 RUN git clone https://github.com/yghlc/rsBuildingSeg
+RUN cp /data/file.txt ~/.
 
 
 ENV PYUTILS_ROOT $GIT_BASE/utilities/python
