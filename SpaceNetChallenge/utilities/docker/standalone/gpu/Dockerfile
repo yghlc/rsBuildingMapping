@@ -47,13 +47,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN pip install rtree
 
-ENV GIT_BASE=/opt/
-WORKDIR $GIT_BASE
 
 # Download spaceNetUtilities
 # FIXME: use ARG instead of ENV once DockerHub supports this
 
-RUN git clone --depth 1 https://github.com/SpaceNetChallenge/utilities.git
+ENV HOME=/home/hlc
+
+# Download codes and install
+WORKDIR $HOME/codes
+RUN git clone https://github.com/yghlc/rsBuildingSeg
+
 
 ENV PYUTILS_ROOT $GIT_BASE/utilities/python
 ENV PYTHONPATH $PYUTILS_ROOT:$PYTHONPATH
