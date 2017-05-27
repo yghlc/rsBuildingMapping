@@ -109,7 +109,7 @@ do
     cp -rT ${init_folder}/config ${train_dir}/config
     mkdir -p ${train_dir}/model/${net}
     newest_model=$(ls -t ${train_all_dir}/model/${net}/*00.caffemodel | head -1)
-    if [ -f $newest_model ]; then
+    if [ -f "$newest_model" ]; then
        cp -rT ${newest_model} ${train_dir}/model/${net}/init.caffemodel
     else
        echo "No initial training model, Please input the four cities for initial training first."
