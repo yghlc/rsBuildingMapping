@@ -92,7 +92,7 @@ if [[ $# -eq 4 ]]; then
 
 else
     echo "Please input the four cities for training"
-    exit 1
+#    exit 1
 fi
 
 #fine tune for each city
