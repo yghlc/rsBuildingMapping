@@ -44,14 +44,13 @@ do
     echo ${training_data_root}
     echo ${outputDirectory}
     if [ ! -d "$outputDirectory" ]; then
-#       python ${python_script} ${training_data_root} --convertTo8Bit --trainTestSplit 0.8 --srcImageryDirectory RGB-PanSharpen --outputDirectory ${outputDirectory} --annotationType PASCALVOC2012
-    echo "skip"
-    fi
-    cd ${outputDirectory}
-    ${replaceXml2Png} test
-    ${replaceXml2Png} trainval
-    cd -
+        python ${python_script} ${training_data_root} --convertTo8Bit --trainTestSplit 0.8 --srcImageryDirectory RGB-PanSharpen --outputDirectory ${outputDirectory} --annotationType PASCALVOC2012
 
+        cd ${outputDirectory}
+        ${replaceXml2Png} test
+        ${replaceXml2Png} trainval
+        cd -
+    fi
 done
 
 ###run training
@@ -76,13 +75,15 @@ if [[ $# -eq 4 ]]; then
             AOI="$element"
         done
         outputDirectory=${project}/voc_format/${AOI}
-        cp ${outputDirectory}/trainval_aug.txt trainval_aug_${AOI}.txt
-        cp ${outputDirectory}/test_aug.txt test_aug_${AOI}.txt
+        cp ${outputDirectory}/trainval_aug.txt ${train_all_dir}/list/trainval_aug_${AOI}.txt
+        cp ${outputDirectory}/test_aug.txt ${train_all_dir}/list/test_aug_${AOI}.txt
     done
-    cat trainval_aug_*.txt test_aug_*.txt > train_aug.txt
+    cat ${train_all_dir}/list/trainval_aug_*.txt ${train_all_dir}/list/test_aug_*.txt > ${train_all_dir}/list/train_aug.txt
 
     #run training
+    cd ${train_all_dir}
     python ${run_train}
+    cd -
 
 else
     echo "Please input the four cities for training"
