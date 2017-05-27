@@ -14,7 +14,7 @@ if [[ $# -eq 0 ]] ; then
 fi
 
 
-project=buidling_spacenet_${topcoderid}
+project=building_spacenet_${topcoderid}
 mkdir ${project}
 
 echo "Input:" "$@"
