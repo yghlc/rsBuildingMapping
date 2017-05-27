@@ -4,6 +4,7 @@
 #email:  huanglingcao@gmail.com
 
 topcoderid=yghlc
+net=deeplab_largeFOV
 init_folder=${HOME}/building_spacenet_init_files
 gpuid=7
 
@@ -28,16 +29,24 @@ replaceXml2Png=${HOME}/codes/rsBuildingMapping/bash_script/replaceXml2Png.sh
 
 run_train=${HOME}/codes/rsBuildingSeg/DeepLab-Context/run_train.py
 
-#pre-processing
-for city in "$@"
-do
-    training_data_root=${city}
+function get_aoi(){
     # Get AOI name (The last folder name in the training_data_root)
+    city=$1
     IFS='/' read -r -a array <<< "$city"
     for element in "${array[@]}"
     do
         AOI="$element"
     done
+    echo ${AOI}
+}
+
+
+
+#pre-processing
+for city in "$@"
+do
+    training_data_root=${city}
+    AOI=$(get_aoi ${city})
     echo "AOI:" ${AOI}
 
     outputDirectory=${project}/voc_format/${AOI}
@@ -62,19 +71,14 @@ if [[ $# -eq 4 ]]; then
     echo "begin training on four cities"
     mkdir ${train_all_dir}
     # prepare config and init model
-    cp -r ${init_folder}/config_4_cities ${train_all_dir}/config
-    cp -r ${init_folder}/model ${train_all_dir}/model
+    cp -rT ${init_folder}/config_4_cities ${train_all_dir}/config
+    cp -rT ${init_folder}/model ${train_all_dir}/model
 
     # prepare list
     mkdir ${train_all_dir}/list
     for city in "$@"
     do
-        # Get AOI name (The last folder name in the training_data_root)
-        IFS='/' read -r -a array <<< "$city"
-        for element in "${array[@]}"
-        do
-            AOI="$element"
-        done
+        AOI=$(get_aoi ${city})
         outputDirectory=${project}/voc_format/${AOI}
         cp ${outputDirectory}/trainval_aug.txt ${train_all_dir}/list/trainval_aug_${AOI}.txt
         cp ${outputDirectory}/test_aug.txt ${train_all_dir}/list/test_aug_${AOI}.txt
@@ -91,10 +95,38 @@ else
     exit 1
 fi
 
-
 #fine tune for each city
 
+for city in "$@"
+do
+    echo "begin finetune on " ${city}
+    AOI=$(get_aoi ${city})
 
+    train_dir=${project}/train_${AOI}
+
+    mkdir ${train_dir}
+    # prepare config and init model
+    cp -rT ${init_folder}/config ${train_dir}/config
+    newest_model=$(ls -t ${train_all_dir}/model/${net}/*00.caffemodel | head -1)
+    if [ -f $newest_model ]; then
+       cp -rT ${newest_model} ${train_dir}/model/init.caffemodel
+    else
+       echo "No initial training model, Please input the four cities for initial training first."
+       exit 1
+    fi
+
+    # prepare list
+    mkdir ${train_dir}/list
+    outputDirectory=${project}/voc_format/${AOI}
+    cp ${outputDirectory}/trainval_aug.txt ${train_dir}/list/trainval_aug_${AOI}.txt
+    cp ${outputDirectory}/test_aug.txt ${train_dir}/list/test_aug_${AOI}.txt
+    cat ${train_dir}/list/trainval_aug_*.txt ${train_dir}/list/test_aug_*.txt > ${train_dir}/list/train_aug.txt
+
+    #run training
+    cd ${train_dir}
+    python ${run_train} $(pwd) ${gpuid}
+    cd -
+done
 
 
 
