@@ -61,8 +61,8 @@ if [[ $# -eq 4 ]]; then
     echo "begin training on four cities"
     mkdir ${train_all_dir}
     # prepare config and init model
-    cp -r $(HOME)/${init_folder}/config_4_cities ${train_all_dir}/.
-    cp -r $(HOME)/${init_folder}/model ${train_all_dir}/.
+    cp -r ${HOME}/${init_folder}/config_4_cities ${train_all_dir}/config
+    cp -r ${HOME}/${init_folder}/model ${train_all_dir}/model
 
     # prepare list
     mkdir ${train_all_dir}/list
