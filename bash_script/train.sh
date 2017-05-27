@@ -43,13 +43,15 @@ do
 
     echo ${training_data_root}
     echo ${outputDirectory}
-
-#    python ${python_script} ${training_data_root} --convertTo8Bit --trainTestSplit 0.8 --srcImageryDirectory RGB-PanSharpen --outputDirectory ${outputDirectory} --annotationType PASCALVOC2012
-
+    if [ ! -d "$outputDirectory" ]; then
+#       python ${python_script} ${training_data_root} --convertTo8Bit --trainTestSplit 0.8 --srcImageryDirectory RGB-PanSharpen --outputDirectory ${outputDirectory} --annotationType PASCALVOC2012
+    echo "skip"
+    fi
     cd ${outputDirectory}
     ${replaceXml2Png} test
     ${replaceXml2Png} trainval
     cd -
+
 done
 
 ###run training
