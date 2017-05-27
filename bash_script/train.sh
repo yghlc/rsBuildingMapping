@@ -5,6 +5,7 @@
 
 topcoderid=yghlc
 init_folder=${HOME}/building_spacenet_init_files
+gpuid=7
 
 # check input arguments
 if [[ $# -eq 0 ]] ; then
@@ -82,7 +83,7 @@ if [[ $# -eq 4 ]]; then
 
     #run training
     cd ${train_all_dir}
-    python ${run_train}
+    python ${run_train} $(pwd) ${gpuid}
     cd -
 
 else
