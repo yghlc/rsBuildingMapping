@@ -1,21 +1,23 @@
 #!/usr/bin/env bash
 
-# return to the version before add opencv 3 with GDAL support
-git reset --hard 5fb23254997931105afe00d996f98da619d08152
-# clean the previous building files
-make clean
+## return to the version before add opencv 3 with GDAL support
+#git reset --hard 5fb23254997931105afe00d996f98da619d08152
+## clean the previous building files
+#make clean
 
-build and run docker for space net challenge:
-cd ~/spaceNetChallege_docker
+#build and run docker for space net challenge:
+
+
 docker build -t yghlc .
-# note: docker run (need absolute path for the data folder)
-docker run -v /home/hlc/spaceNetChallege_docker:/data -it yghlc
 
-docker run -v /home/hlc/Data/aws_SpaceNet/un_gz:/data -it yghlc
+# note: docker run (need absolute path for the data folder)
+#docker run -v /home/hlc/spaceNetChallege_docker:/data -it yghlc
+
+#docker run -v /home/hlc/Data/aws_SpaceNet/un_gz:/data -it yghlc
 
 nvidia-docker run -v /home/hlc/Data/aws_SpaceNet/un_gz:/data -it yghlc
 
-docker rm yghlc
+#docker rm yghlc
 
 
 
