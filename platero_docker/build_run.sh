@@ -8,6 +8,12 @@
 #build and run docker for space net challenge:
 #
 #cd ~/spaceNetChallege_docker
+
+if [ ! -d "MATLAB" ]; then
+    echo "MATLAB not exist. Please copy it to current directory!"
+    exit 1
+fi
+
 docker build -t platero .
 
 # note: docker run (need absolute path for the data folder)
