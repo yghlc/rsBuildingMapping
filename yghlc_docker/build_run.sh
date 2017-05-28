@@ -7,6 +7,18 @@
 
 #build and run docker for space net challenge:
 
+if [ ! -d "rsBuildingSeg" ]; then
+ git clone https://github.com/yghlc/rsBuildingSeg.git
+fi
+
+if [ ! -d "rsBuildingMapping" ]; then
+ git clone https://github.com/yghlc/rsBuildingMapping.git
+fi
+
+if [ ! -d "building_spacenet_init_files" ]; then
+    echo "building_spacenet_init_files not exist. Please copy it to current directory!"
+    exit 1
+fi
 
 docker build -t yghlc .
 
@@ -15,7 +27,8 @@ docker build -t yghlc .
 
 #docker run -v /home/hlc/Data/aws_SpaceNet/un_gz:/data -it yghlc
 
-nvidia-docker run -v /home/hlc/Data/aws_SpaceNet/un_gz:/data -it yghlc
+# need nvidia for running GPU
+#nvidia-docker run -v /home/hlc/Data/aws_SpaceNet/un_gz:/data -it yghlc
 
 #docker rm yghlc
 
