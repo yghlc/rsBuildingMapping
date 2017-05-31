@@ -5,7 +5,8 @@
 
 topcoderid=yghlc
 net=deeplab_largeFOV
-init_folder=${HOME}/building_spacenet_init_files
+ROOT_DIR=$PWD
+init_folder=${ROOT_DIR}/building_spacenet_init_files
 gpuid=0
 
 # check input arguments
@@ -24,10 +25,10 @@ echo "Project fodler:"  ${project}
 
 outputDirectory=${project}/voc_format
 
-python_script=${HOME}/codes/rsBuildingMapping/SpaceNetChallenge/utilities/python/createDataSpaceNet.py
-replaceXml2Png=${HOME}/codes/rsBuildingMapping/bash_script/replaceXml2Png.sh
+python_script=${ROOT_DIR}/codes/rsBuildingMapping/SpaceNetChallenge/utilities/python/createDataSpaceNet.py
+replaceXml2Png=${ROOT_DIR}/codes/rsBuildingMapping/bash_script/replaceXml2Png.sh
 
-run_train=${HOME}/codes/rsBuildingSeg/DeepLab-Context/run_train.py
+run_train=${ROOT_DIR}/codes/rsBuildingSeg/DeepLab-Context/run_train.py
 
 function get_aoi(){
     # Get AOI name (The last folder name in the training_data_root)
