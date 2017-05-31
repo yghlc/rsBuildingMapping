@@ -1,18 +1,10 @@
 #!/usr/bin/env bash
 
-## return to the version before add opencv 3 with GDAL support
-#git reset --hard 5fb23254997931105afe00d996f98da619d08152
-## clean the previous building files
+
 #make clean
 
 #build and run docker for space net challenge:
 #
-#cd ~/spaceNetChallege_docker
-
-if [ ! -d "MATLAB" ]; then
-    echo "MATLAB not exist. Please copy it to current directory!"
-    exit 1
-fi
 
 docker build -t platero .
 
