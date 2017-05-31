@@ -41,7 +41,6 @@ function get_aoi(){
 }
 
 
-
 #pre-processing
 for city in "$@"
 do
