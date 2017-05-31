@@ -1,4 +1,4 @@
-FROM nvidia/cuda:8.0-cudnn5-devel-ubuntu16.04
+FROM nvidia/cuda:7.5-cudnn4-devel-ubuntu14.04
 LABEL maintainer dlindenbaum
 
 ## Install General Requirements
@@ -26,9 +26,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         python-scipy
 
 ## Install GDAL Requirments
-RUN apt-get install -y \
-        gdal-bin \
-        python-gdal
+#RUN apt-get install -y \
+#        gdal-bin \
+#        python-gdal
 
 # Install Essentials for Caffe
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -44,7 +44,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 	liblmdb-dev
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libatlas-base-dev
+    libatlas-base-dev \
+    libmatio-dev \
+    unzip
 
 
 ## FIXME: use ARG instead of ENV once DockerHub supports this
@@ -56,24 +58,35 @@ RUN pip install protobuf
 RUN pip install wget
 RUN pip install Pillow
 
-## mat file read and write for Deeplab
-#RUN apt-get update && apt-get install -y --no-install-recommends \
-#    libmatio-dev
+RUN apt-get install -y --no-install-recommends \
+     software-properties-common \
+     python-software-properties
+RUN apt-add-repository ppa:ubuntugis/ubuntugis-unstable
+RUN apt-get update && apt-get install -y --no-install-recommends\
+    gdal-bin \
+    python-gdal
 
 ENV HOME /home/platero
 WORKDIR $HOME
 
-COPY MATLAB /home/platero/MATLAB
-#COPY matlab_lic/license.lic /home/platero/MATLAB/R2017a/licenses/license.lic
-
+COPY MATLAB.zip /home/platero/MATLAB.zip
+RUN unzip MATLAB.zip
+RUN rm MATLAB.zip
 ENV PATH /home/platero/MATLAB/R2017a/bin:$PATH
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-       net-tools \
-       ethtool \
-       iputils-ping
+#RUN apt-get update && apt-get install -y --no-install-recommends \
+#       net-tools \
+#       ethtool \
+#       iputils-ping
 
-WORKDIR /data
+COPY spacenet_release /home/platero/spacenet_release
+COPY caffe.sh /home/platero/caffe.sh
+RUN bash caffe.sh
+
+ENV LD_LIBRARY_PATH /home/platero/spacenet_release/cudnn_v4/lib64:$LD_LIBRARY_PATH
+
+WORKDIR /home/platero/spacenet_release
+
 
 #
 ## Download codes and install

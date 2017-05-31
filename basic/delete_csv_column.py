@@ -81,6 +81,9 @@ def main(options, args):
     # path = 'result_buildings.csv'
     modify_list = []
     for path in path_list:
+        if os.path.isfile(path) is False:
+            print("warning, file %s not exist"%path)
+            continue
         m_path = delete_fouth_coloumn_csv(path)
         modify_list.append(m_path)
 
