@@ -65,11 +65,12 @@ WORKDIR $HOME
 #RUN apt-get install -y cuda
 
 #copy and build caffe in Deeplab-Context
-RUN mkdir codes
 COPY rsBuildingSeg /home/root/codes/rsBuildingSeg
 COPY rsBuildingMapping /home/root/codes/rsBuildingMapping
 COPY caffe.sh /home/root/caffe.sh
 COPY building_spacenet_init_files /home/root/building_spacenet_init_files
+COPY test.sh /home/root/test.sh
+COPY train.sh /home/root/train.sh
 #
 RUN bash caffe.sh
 
@@ -77,7 +78,6 @@ RUN bash caffe.sh
 RUN pip install wget
 RUN pip install Pillow
 
-WORKDIR /data
 
 #
 ## Download codes and install

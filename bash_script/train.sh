@@ -24,10 +24,10 @@ echo "Project fodler:"  ${project}
 
 outputDirectory=${project}/voc_format
 
-python_script=${HOME}/codes/rsBuildingMapping/SpaceNetChallenge/utilities/python/createDataSpaceNet.py
-replaceXml2Png=${HOME}/codes/rsBuildingMapping/bash_script/replaceXml2Png.sh
+python_script=${HOME}/rsBuildingMapping/SpaceNetChallenge/utilities/python/createDataSpaceNet.py
+replaceXml2Png=${HOME}/rsBuildingMapping/bash_script/replaceXml2Png.sh
 
-run_train=${HOME}/codes/rsBuildingSeg/DeepLab-Context/run_train.py
+run_train=${HOME}/rsBuildingSeg/DeepLab-Context/run_train.py
 
 function get_aoi(){
     # Get AOI name (The last folder name in the training_data_root)

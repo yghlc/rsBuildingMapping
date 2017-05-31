@@ -11,7 +11,6 @@ ROOT_DIR=$PWD
 
 topcoderid=yghlc
 net=deeplab_largeFOV
-init_folder=${HOME}/building_spacenet_init_files
 gpuid=0
 
 python_script=${ROOT_DIR}/rsBuildingMapping/basic/tif_16bit_to_8bit.py

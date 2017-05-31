@@ -28,7 +28,7 @@ docker build -t yghlc .
 #docker run -v /home/hlc/Data/aws_SpaceNet/un_gz:/data -it yghlc
 
 # need nvidia for running GPU
-#nvidia-docker run -v /home/hlc/Data/aws_SpaceNet/un_gz:/data -it yghlc
+nvidia-docker run -v /home/hlc/Data/aws_SpaceNet/un_gz:/data -it yghlc
 
 #docker rm yghlc
 
