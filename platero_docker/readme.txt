@@ -13,9 +13,9 @@ Inference:
 cd to spacenet_release folder, then run :
 ./test.sh /data/test/AOI_2_Vegas_Test /data/test/AOI_3_Paris_Test /data/test/AOI_4_Shanghai_Test /data/test/AOI_5_Khartoum_Test out.csv
 
-make sure the input path is correct, my script will not check.
+make sure the input path is correct. My script will not check.
 
-I use MATLAB in the inference and the submitted package include a one month trail licence. It will expired on 26 June 2017.
+I use MATLAB in the inference and the submitted package include a one-month trail licence. It will expire on 26 June 2017.
 
 Wei Yang
 platero.yang@gmail.com
