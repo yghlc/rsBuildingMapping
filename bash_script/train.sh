@@ -6,7 +6,7 @@
 topcoderid=yghlc
 net=deeplab_largeFOV
 init_folder=${HOME}/building_spacenet_init_files
-gpuid=7
+gpuid=0
 
 # check input arguments
 if [[ $# -eq 0 ]] ; then
