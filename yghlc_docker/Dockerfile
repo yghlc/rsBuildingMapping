@@ -1,4 +1,4 @@
-FROM nvidia/cuda:8.0-cudnn5-devel-ubuntu16.04
+FROM nvidia/cuda:8.0-devel-ubuntu16.04
 LABEL maintainer dlindenbaum
 
 ## Install General Requirements
@@ -42,9 +42,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libatlas-base-dev
 
 ## Install GDAL Requirments
-RUN apt-get install -y \
-        gdal-bin \
-        python-gdal
+RUN apt-get install -y --no-install-recommends \
+     software-properties-common \
+     python-software-properties
+RUN apt-add-repository ppa:ubuntugis/ubuntugis-unstable
+RUN apt-get update && apt-get install -y --no-install-recommends\
+    gdal-bin \
+    python-gdal
 
 ## FIXME: use ARG instead of ENV once DockerHub supports this
 ## Install RTRee
@@ -57,6 +61,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libmatio-dev
 
 ENV HOME /home/root
+ENV PATH /home/root:$PATH
 WORKDIR $HOME
 
 #COPY cuda-repo-ubuntu1604-8-0-local-ga2_8.0.61-1_amd64.deb /home/root/cuda-repo-ubuntu1604-8-0-local-ga2_8.0.61-1_amd64.deb

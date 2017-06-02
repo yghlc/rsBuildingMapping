@@ -7,13 +7,6 @@
 
 #build and run docker for space net challenge:
 
-if [ ! -d "rsBuildingSeg" ]; then
- git clone https://github.com/yghlc/rsBuildingSeg.git
-fi
-
-if [ ! -d "rsBuildingMapping" ]; then
- git clone https://github.com/yghlc/rsBuildingMapping.git
-fi
 
 if [ ! -d "building_spacenet_init_files" ]; then
     echo "building_spacenet_init_files not exist. Please copy it to current directory!"
