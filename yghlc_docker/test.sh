@@ -107,7 +107,7 @@ R_AOI_4=${project}/result_csv/result_AOI_4.csv
 R_AOI_5=${project}/result_csv/result_AOI_5.csv
 python ${ROOT_DIR}/codes/rsBuildingMapping/basic/delete_csv_column.py ${R_AOI_2} ${R_AOI_3} ${R_AOI_4} ${R_AOI_5}
 
-mv ${project}/result_csv/result_buildings_Test_public.csv ${outputcsv}
+mv ${ROOT_DIR}/result_buildings_Test_public.csv ${outputcsv}
 
 
 
